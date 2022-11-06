@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
 import { login, getinfo } from '~/api/manager.js'
-import {setToken} from '~/composables/auth.js'
+import {setToken,remToken} from '~/composables/auth.js'
 
 
 // 创建一个新的 store 实例
@@ -33,6 +33,10 @@ const store = createStore({
           resolve(res)
         }).catch(err => reject(err));
       })
+    },
+    logout({commit}){
+      remToken()
+      commit("SET_USERINFO",{})
     }
   }
 })

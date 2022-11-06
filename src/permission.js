@@ -3,15 +3,18 @@ import {
   getToken
 } from '~/composables/auth.js'
 import {
-  toast
+  toast,showFullLoading,hideFullLoading
 } from '~/composables/util.js'
 import store from './store'
 
 
+
+// 前置守卫： 有请求和跳转时做监控
 // BAD
 router.beforeEach(async (to, from, next) => {
-  console.log("apple")
-  console.log(to, from)
+  showFullLoading()
+  // console.log("apple")
+  // console.log(to, from)
   const token = getToken()
 
   if (!token && to.path != "/login") {
@@ -37,3 +40,5 @@ router.beforeEach(async (to, from, next) => {
   // // 如果用户未能验证身份，则 `next` 会被调用两次
   // next()
 })
+
+router.afterEach((to, from) => hideFullLoading())

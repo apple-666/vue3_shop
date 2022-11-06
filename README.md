@@ -1,7 +1,17 @@
-# Vue 3 + Vite
-
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
-
-## Recommended IDE Setup
-
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+# 项目目录
+- 根路径下的文件
+  vite.config.js 为路径取别名， 为url做proxy
+- src 目录
+  - 文件
+    1. App.vue 初始主页面
+    2. axios.js 请求，响应拦截器
+    3. main.js 导入各个模块的入口（app.use(etc..)）
+    1. permission.js 前置（后置）守卫，处理跳转
+  - 文件夹
+    1. api: 未请求接口做封装
+    2. assets: 静态资源
+    3. components:组件
+    4. composables: 公共工具
+    5. pages: 页面
+    6. router:路由（请求路径和页面的映射）
+    1. store:存储状态信息（管理用户token等信息）
