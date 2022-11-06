@@ -3,7 +3,9 @@ import {
   getToken
 } from '~/composables/auth.js'
 import {
-  toast,showFullLoading,hideFullLoading
+  toast,
+  showFullLoading,
+  hideFullLoading
 } from '~/composables/util.js'
 import store from './store'
 
@@ -32,9 +34,13 @@ router.beforeEach(async (to, from, next) => {
   }
 
   // 用户信息存在 全局的vuex中
-  if(token){
+  if (token) {
     await store.dispatch("getinfo")
   }
+
+
+  let title = (to.meta.title ? to.meta.title : "未定义页面") + "-Parker的练习后台"
+  document.title = title
   next() // 放行
   // if (to.name !== 'Login' && !isAuthenticated) next({ name: 'Login' })
   // // 如果用户未能验证身份，则 `next` 会被调用两次
