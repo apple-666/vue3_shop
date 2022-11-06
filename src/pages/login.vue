@@ -28,7 +28,7 @@
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" round class="w-[250px]" @click="onSubmit">login</el-button>
+          <el-button type="primary" round class="w-[250px]" @click="onSubmit" :loading="loading">login</el-button>
           <!-- <el-button>Cancel</el-button> -->
         </el-form-item>
       </el-form>
@@ -39,33 +39,63 @@
 
 
 <script setup>
-import { reactive,ref } from 'vue'
-
+import { reactive, ref,onMounted,onBeforeUnmount } from 'vue'  // onmount 生命周期
+import * as util from '~/composables/util.js'
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+const store = useStore()
+const router = useRouter()
 // do not use same name with ref
 const form = reactive({
   username: '',
   password: ''
 })
 
+const loading = ref(false)
 const rules = {
   username: [
     { required: true, message: 'Please input Activity name', trigger: 'blur' },
-    { min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur' },
+    { min: 1, max: 20, message: 'Length should be 1 to 20', trigger: 'blur' },
   ],
   password: [
     { required: true, message: 'Please input Activity name', trigger: 'blur' },
-    { min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur' },
+    { min: 1, max: 20, message: 'Length should be 1 to 20', trigger: 'blur' },
   ]
 }
 
-const formRef=ref(null)
+const formRef = ref(null)
 
 const onSubmit = () => {
-  formRef.value.validate((valid)=>{
-    console.log('submit')
+  formRef.value.validate((valid) => {
+    // console.log('submit')
+    if (!valid) {
+      return false
+    }
+    loading.value = true
+
+    store.dispatch("login", form).then(() => {
+      util.toast('登录成功', 'success')
+      router.push('/')
+    }).finally(() => {
+      loading.value = false
+    })
   })
-  // console.log('submit!')
 }
+
+// 回车登录
+function onKeyUp(e){
+  let key = e.key
+  if(key == "Enter") onSubmit()
+}
+
+onMounted(()=>{
+  document.addEventListener("keyup", onKeyUp)
+})
+
+onBeforeUnmount(()=>{
+  document.removeEventListener("keyup", onKeyUp)
+})
+
 </script>
 
 <style >
